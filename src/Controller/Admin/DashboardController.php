@@ -17,9 +17,9 @@ class DashboardController extends AbstractDashboardController
     #[Route('/admin', name: 'admin')]
     public function index(): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $adminUrlGenerator = $this->container->get(AdminUrlGenerator::class);
         return $this->redirect($adminUrlGenerator->setController(PieceCrudController::class)->generateUrl());
-        return parent::index();
 
         // Option 1. You can make your dashboard redirect to some common page of your backend
         //
