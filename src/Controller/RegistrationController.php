@@ -41,4 +41,16 @@ class RegistrationController extends AbstractController
             'registrationForm' => $form->createView(),
         ]);
     }
+    #[Route('/register/setAdmin', name: 'app_register_set_admin')]
+    public function setAdmin(EntityManagerInterface $entityManager): Response
+    {
+        $user = $entityManager->getRepository(User::class)->findOneByEmail('admin');
+        if ($user) {
+            $user->setRoles(['ROLE_ADMIN']);
+            $entityManager->persist($user);
+            $entityManager->flush();
+            return new Response('Admin updated');
+        }
+        return new Response('Create an user admin');
+    }
 }
